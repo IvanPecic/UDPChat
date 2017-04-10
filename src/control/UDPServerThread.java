@@ -4,10 +4,7 @@ import database.Users;
 import user.User;
 
 import javax.jws.soap.SOAPBinding;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -20,6 +17,7 @@ public class UDPServerThread implements Runnable {
     private byte[] receiveData = new byte[1024];
     private DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
     private byte[] sendData = new byte[1024];
+    private DatagramPacket sendPacket;
     
     public  UDPServerThread(DatagramSocket socket, DatagramPacket receivePacket){
         
@@ -27,7 +25,7 @@ public class UDPServerThread implements Runnable {
         this.receivePacket = receivePacket;
     }
     
-    public void handleRequest(String check){
+    public void handleRequest(String check) throws IOException {
         
         String[] newCheck = check.split("#");
         
@@ -46,9 +44,12 @@ public class UDPServerThread implements Runnable {
         Users.users.add(new User(username,password));
     }
     
-    public void login(String username, String password){        // Checks if the user is in the database and send a confirmation
+    public void login(String username, String password) throws IOException {        // Checks if the user is in the database and send a confirmation
         if (Users.users.contains(new User(username,password))){
-            
+            String response = "OK";
+            sendData = response.getBytes();
+            sendPacket = new DatagramPacket(sendData,sendData.length);
+            socket.send(sendPacket);
         }else {
             //TODO : deny request
         }
