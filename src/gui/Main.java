@@ -40,13 +40,10 @@ public class Main extends Application{
             String uName = userField.getText();
             String pWord = passField.getText();
             User u = new User(uName,pWord);
-            if(Users.users.contains(u)) {
-                UDPClient.main(null);
+            UDPClient.main(null);
+            if(u.login()){
                 new ChatScreen();
                 primaryStage.close();
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR,"Nepostojeci korisnik",ButtonType.CLOSE);
-                alert.show();
             }
         });
     }

@@ -59,7 +59,7 @@ public class UDPClient  {
 
     }
 
-    public void sendLogInRequest(User u) throws IOException {
+    public boolean sendLogInRequest(User u) throws IOException {
         String username = u.getUsername();
         String password = u.getPassword();
         String requestMsg = "log"+"#"+username + "#" + password;
@@ -67,6 +67,17 @@ public class UDPClient  {
         DatagramPacket packet;
         packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 2017);
         socket.send(packet);
+        byte[] recvBuffer = new byte[1024];
+        DatagramPacket receivePacket = new DatagramPacket(recvBuffer,recvBuffer.length);
+        boolean responseReceived = false;
+        while (!responseReceived){
+            socket.receive(receivePacket);
+            responseReceived = true;
+            String responseString  = new String(recvBuffer).trim();
+            return responseString.equals("OK");
+
+        }
+        return false;
     }
 
     public static void main(String[] args){

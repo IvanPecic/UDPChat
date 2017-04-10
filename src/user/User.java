@@ -34,12 +34,14 @@ public class User {
         }
     }
 
-    public void login(){
+    public boolean login(){
         try {
-            udpClient.sendLogInRequest(this);
+            this.udpClient = UDPClient.instance;
+            return udpClient.sendLogInRequest(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public void sendMessage(String message){
