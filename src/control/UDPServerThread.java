@@ -77,6 +77,7 @@ public class UDPServerThread implements Runnable {
                 String message = new String(receivePacket.getData()).trim();
                 System.out.print("Klijent kaze: ");
                 System.out.println(message);
+                handleRequest(message);
                 // ------------------ PROTOKOL ----------------- //
                 sendData = ("OK").getBytes();
                 //                socket.send(new DatagramPacket(sendData, 0, sendData.length));

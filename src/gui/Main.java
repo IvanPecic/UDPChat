@@ -42,7 +42,7 @@ public class Main extends Application{
             User u = new User(uName,pWord);
             UDPClient.main(null);
             if(u.login()){
-                new ChatScreen();
+                new ChatScreen(u);
                 primaryStage.close();
             }
         });

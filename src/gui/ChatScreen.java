@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import user.User;
 
 /**
  * UDPChatV2
@@ -17,8 +18,10 @@ public class ChatScreen extends Stage {
     private VBox root = new VBox();
     private TextArea textArea = new TextArea();
     private Button send = new Button("Send");
+    private User user;
 
-    public ChatScreen(){
+    public ChatScreen(User user){
+        this.user = user;
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(10));
         root.setSpacing(20);
@@ -29,7 +32,7 @@ public class ChatScreen extends Stage {
 
         send.setOnAction(e->{
             try {
-                UDPClient.instance.posaljiPoruku(textArea.getText());
+                user.sendMessage(textArea.getText());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
