@@ -43,7 +43,11 @@ public class User {
     }
 
     public void sendMessage(String message){
-        udpClient.posaljiPoruku(this, message);
+        try {
+            udpClient.sendMessage(this, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
