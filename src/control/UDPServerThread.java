@@ -49,6 +49,13 @@ public class UDPServerThread implements Runnable {
             String response = "OK";
             sendData = response.getBytes();
             sendPacket = new DatagramPacket(sendData,sendData.length);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            socket.close();
+            socket = new DatagramSocket(2017);
             socket.send(sendPacket);
         }else {
             //TODO : deny request
@@ -79,7 +86,7 @@ public class UDPServerThread implements Runnable {
                 System.out.println(message);
                 handleRequest(message);
                 // ------------------ PROTOKOL ----------------- //
-                sendData = ("OK").getBytes();
+                //sendData = ("OK").getBytes();
                 //                socket.send(new DatagramPacket(sendData, 0, sendData.length));
             }
         }catch (Exception e){

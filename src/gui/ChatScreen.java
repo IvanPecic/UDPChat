@@ -32,7 +32,7 @@ public class ChatScreen extends Stage {
 
         send.setOnAction(e->{
             try {
-                user.sendMessage(textArea.getText());
+                user.sendMessage( textArea.getText());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

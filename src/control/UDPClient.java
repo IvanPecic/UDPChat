@@ -18,6 +18,7 @@ public class UDPClient  {
     private DatagramSocket socket;
     public  UDPClient() throws  Exception {
     socket = new DatagramSocket();
+    socket.setSoTimeout(10000);
     Scanner tastatura = new Scanner(System.in);
     String message;
 
@@ -70,14 +71,12 @@ public class UDPClient  {
         byte[] recvBuffer = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket(recvBuffer,recvBuffer.length);
         boolean responseReceived = false;
-        while (!responseReceived){
+
             socket.receive(receivePacket);
             responseReceived = true;
             String responseString  = new String(recvBuffer).trim();
+            System.out.println("RESPONSE RECEIVED");
             return responseString.equals("OK");
-
-        }
-        return false;
     }
 
     public static void main(String[] args){
