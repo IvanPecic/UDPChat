@@ -4,6 +4,7 @@ import control.UDPClient;
 import database.Users;
 
 import javax.jws.soap.SOAPBinding;
+import java.io.IOException;
 
 /**
  * UDPChat
@@ -19,10 +20,31 @@ public class User {
         this.password = password;
     }
 
-    public boolean authenticate(User user){
+    public void authenticate(User user){
         if(Users.users.contains(user)){
-            this.udpClient =
+            this.udpClient = UDPClient.instance;
         }
+    }
+
+    public void register(){
+        try {
+            udpClient.sendRegRequest(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void login(){
+        try {
+            udpClient.sendLogInRequest(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(String message){
+        udpClient.posaljiPoruku(this, message);
+
     }
 
     public String getUsername() {

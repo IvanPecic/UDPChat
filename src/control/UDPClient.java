@@ -1,8 +1,12 @@
 package control;
 
+import user.User;
+
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
@@ -36,9 +40,29 @@ public class UDPClient  {
 //        }
     }
 
-    public void posaljiPoruku(String poruka) throws Exception{
-        String message = poruka;
-        byte[] buffer = message.getBytes();
+    public void sendMessage(User u, String message) throws Exception{
+        String requestMsg = "msg" +"#"+ u.getUsername() + "#" + message;
+        byte[] buffer = requestMsg.getBytes();
+        DatagramPacket packet;
+        packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 2017);
+        socket.send(packet);
+    }
+
+    public void sendRegRequest(User u) throws IOException {
+        String username = u.getUsername();
+        String password = u.getPassword();
+        String requestMsg = "reg"+"#"+username + "#" + password;
+        byte[] buffer = requestMsg.getBytes();
+        DatagramPacket packet;
+        packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 2017);
+        socket.send(packet);
+    }
+
+    public void sendLogInRequest(User u) throws IOException {
+        String username = u.getUsername();
+        String password = u.getPassword();
+        String requestMsg = "log"+"#"+username + "#" + password;
+        byte[] buffer = requestMsg.getBytes();
         DatagramPacket packet;
         packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 2017);
         socket.send(packet);
