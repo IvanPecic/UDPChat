@@ -54,8 +54,6 @@ public class UDPServerThread implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            socket.close();
-            socket = new DatagramSocket(2017);
             socket.send(sendPacket);
         }else {
             //TODO : deny request
