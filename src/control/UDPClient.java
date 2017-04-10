@@ -56,6 +56,7 @@ public class UDPClient  {
         DatagramPacket packet;
         packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 2017);
         socket.send(packet);
+
     }
 
     public void sendLogInRequest(User u) throws IOException {

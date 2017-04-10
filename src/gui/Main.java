@@ -41,10 +41,6 @@ public class Main extends Application{
             String pWord = passField.getText();
             User u = new User(uName,pWord);
             if(Users.users.contains(u)) {
-                if (UDPServer.started == false) {
-                    UDPServer.main(null);
-                    UDPServer.started = true;
-                }
                 UDPClient.main(null);
                 new ChatScreen();
                 primaryStage.close();
