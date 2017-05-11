@@ -32,27 +32,35 @@ public class UDPServerThread implements Runnable {
     
     public void handleRequest(String check, DatagramPacket packet) throws IOException {
 
-        String[] newCheck = check.split("#");
-        
-        if (newCheck[0].equals("reg")){
-            register(newCheck[1],newCheck[2],packet);
-        }else  if (newCheck[0].equals("log")){
-            login(packet, newCheck[1],newCheck[2]);
-        }else if (newCheck[0].equals("msg")){
-            chatMessage(newCheck[1],newCheck[2]);
-        }else if (newCheck[0].equals("get")){
+        String[] requestTokens = check.split("#");
+        //Obradjuje zahtev klijenta
+        //
+        //Formati zaglavlja:
+        //  Registracija:   reg#username#password
+        //  Log in:         log#username#password
+        //  Poruka:         msg#username#text
+        //  Refresh poruka: get#username#time
+
+        if (requestTokens[0].equals("reg")){
+            register(requestTokens[1],requestTokens[2],packet);
+        }else  if (requestTokens[0].equals("log")){
+            login(packet, requestTokens[1],requestTokens[2]);
+        }else if (requestTokens[0].equals("msg")){
+            chatMessage(requestTokens[1],requestTokens[2]);
+        }else if (requestTokens[0].equals("get")){
 
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             Date date = null;
             try {
-                date = df.parse(newCheck[2]);
+                date = df.parse(requestTokens[2]);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            updateClient(new User(newCheck[1]),date,packet);
+            updateClient(new User(requestTokens[1]),date,packet);
         }
     }
-    
+
+    //Registruje korinsika na server
     public void register(String username, String password, DatagramPacket packet) throws IOException {
         boolean registered = false;
         User u = new User(username,password);
@@ -72,7 +80,8 @@ public class UDPServerThread implements Runnable {
         socket.send(sendPacket);
 
     }
-    
+
+    //Loguje korisnika na server
     public void login(DatagramPacket packet, String username, String password) throws IOException {
         String response;
         User u = new User(username,password);
@@ -87,16 +96,19 @@ public class UDPServerThread implements Runnable {
         sendPacket =  new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
         socket.send(sendPacket);
     }
-    
-    public void chatMessage(String clientName, String clientMessage) {   //Prints a message to the chat screen
+
+    //Dodaje novu poruku na server
+    public void chatMessage(String clientName, String clientMessage) {
             User u = User.checkLoggedIn(clientName);
             Message message = new Message(u, Date.from(Instant.now()), clientMessage);
             Messages.instance.addMessage(message);
     }
 
+    //Vraca nove poruke klijentu
     public void updateClient(User u, Date date, DatagramPacket packet) throws IOException {
-        System.out.println("Client update request");
         Message toSend = null;
+
+        //Ucitavanje poruka iz Queue-a
         if(Messages.instance.getMsgList().size()> 0)
         for(int i = 0; i< Messages.instance.getMsgList().size(); i++) {
             if (!Messages.instance.getMsgList().get(i).getSeen().contains(u.getUsername())) {

@@ -53,6 +53,7 @@ public class User {
         return false;
     }
 
+    //Log in-uje korisnika
     public boolean login(){
         try {
             this.udpClient = UDPClient.instance;
@@ -85,6 +86,7 @@ public class User {
         this.loggedIn = loggedIn;
     }
 
+    //Salje korisnikovu poruku
     public void sendMessage(String message){
         if(udpClient == null){
             udpClient = UDPClient.instance;

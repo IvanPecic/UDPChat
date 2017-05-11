@@ -24,6 +24,7 @@ public class UDPClient  {
     socket.setSoTimeout(2000);
     }
 
+    //Salje poruku na server
     public void sendMessage(User u, String message) throws Exception{
         String requestMsg = "msg" +"#"+ u.getUsername() + "#" + message;
         byte[] buffer = requestMsg.getBytes();
@@ -32,6 +33,7 @@ public class UDPClient  {
         socket.send(packet);
     }
 
+    //Ucitava poruke sa servera
     public void getMessages( User u) throws Exception{
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = null;
@@ -57,6 +59,7 @@ public class UDPClient  {
         Messages.instance.getMsgList().add(rcvMessage);
     }
 
+    //Salje serveru zahtev za registraciju
     public boolean sendRegRequest(User u) throws IOException {
         String username = u.getUsername();
         String password = u.getPassword();
@@ -75,6 +78,7 @@ public class UDPClient  {
 
     }
 
+    //Salje serveru zahtev za log-in
     public boolean sendLogInRequest(User u) throws IOException {
         String username = u.getUsername();
         String password = u.getPassword();
