@@ -1,0 +1,10 @@
+UDP CHAT
+
+Ivan Pecic RM68/14
+Aleksandar Todorovic RM45/15
+
+Server se pokrece pokretanjem UDPChat.main()
+
+Korisnicka, tj. klijentska strana se pokrece pokretanjem Main.main()
+
+Nakon popunjenog korisnickog imena i lozinke pritiskom na register se registruje, ili pritiskom na log in prijavljuje na server.
