@@ -3,7 +3,6 @@ package user;
 import control.UDPClient;
 import database.Users;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 
 /**
@@ -14,10 +13,27 @@ public class User {
     private UDPClient udpClient;
     private String username;
     private String password;
+    private boolean loggedIn;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username) {
+        this.username = username;
+        this.password = null;
+        this.loggedIn = false;
+    }
+
+    public static User checkLoggedIn(String username){
+        for(User u: Users.users){
+            if(u.getUsername().equals(username)){
+                if(u.isLoggedIn())
+                    return u;
+            }
+        }
+        return null;
     }
 
     public void authenticate(User user){
@@ -26,25 +42,52 @@ public class User {
         }
     }
 
-    public void register(){
+    public boolean register(){
         try {
-            udpClient.sendRegRequest(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean login(){
-        try {
-            this.udpClient = UDPClient.instance;
-            return udpClient.sendLogInRequest(this);
+            if(udpClient == null)
+                udpClient = UDPClient.instance;
+            return udpClient.sendRegRequest(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    public boolean login(){
+        try {
+            this.udpClient = UDPClient.instance;
+            setLoggedIn(udpClient.sendLogInRequest(this));
+            if(!Users.users.contains(this))
+                Users.users.add(this);
+            Users.users.get(Users.users.indexOf(this)).setLoggedIn(true);
+            System.out.println("LOGIN STATUS:" + loggedIn);
+            return loggedIn;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public UDPClient getUdpClient() {
+        return udpClient;
+    }
+
+    public void setUdpClient(UDPClient udpClient) {
+        this.udpClient = udpClient;
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
     public void sendMessage(String message){
+        if(udpClient == null){
+            udpClient = UDPClient.instance;
+        }
         try {
             udpClient.sendMessage(this, message);
         } catch (Exception e) {
@@ -77,5 +120,10 @@ public class User {
 
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 }

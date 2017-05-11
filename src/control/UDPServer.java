@@ -1,5 +1,7 @@
 package control;
 
+import database.Messages;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -18,6 +20,7 @@ public class UDPServer {
     public UDPServer() throws Exception{
         receivePacket = new DatagramPacket(receiveData,receiveData.length);
         socket = new DatagramSocket(port);
+        new Messages();
             UDPServerThread serverThread = new UDPServerThread(socket,receivePacket);
             Thread thread = new Thread(serverThread);
             thread.start();

@@ -17,6 +17,12 @@ public class Users {
     }
 
     public Users(){
-        users.add(new User("todor","123"));
+        User u  = new User("user1","123");
+        u.setLoggedIn(true);
+        User u1  = new User("user2","123");
+        u1.setLoggedIn(true);
+        users.add(u);
+        users.add(u1);
     }
+
 }
