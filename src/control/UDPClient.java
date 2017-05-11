@@ -7,14 +7,10 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner;
 
 /**
  * UDPChat
@@ -25,27 +21,7 @@ public class UDPClient  {
     private DatagramSocket socket;
     public  UDPClient() throws  Exception {
     socket = new DatagramSocket();
-    socket.setSoTimeout(10000);
-    Scanner tastatura = new Scanner(System.in);
-    String message;
-
-//		while(true) {
-//
-//            // SLANJE PAKETA
-//            System.out.print("Unesi poruku: ");
-//            message = tastatura.nextLine();
-//            byte[] buffer = message.getBytes();
-//            DatagramPacket packet;
-//            packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 2017);
-//            socket.send(packet);
-//
-//            //PRIHVATANJE PAKETA
-////            buffer = new byte[1500];
-////            packet = new DatagramPacket(buffer, 1500);
-////            socket.receive(packet);
-////            message = new String(buffer).trim();
-////            System.out.println("[Receiver]: " + message);
-//        }
+    socket.setSoTimeout(2000);
     }
 
     public void sendMessage(User u, String message) throws Exception{

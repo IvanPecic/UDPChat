@@ -1,17 +1,12 @@
 package gui;
 
 import control.UDPClient;
-import control.UDPServer;
-import database.Messages;
 import database.Users;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -43,12 +38,12 @@ public class Main extends Application{
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-
         logIn.setOnAction(e->{
             String uName = userField.getText();
             String pWord = passField.getText();
             User u = new User(uName,pWord);
             UDPClient.main(null);
+
             if(u.login()){
                 new ChatScreen(Users.users.get(Users.users.indexOf(u)));
                 primaryStage.close();
@@ -58,6 +53,7 @@ public class Main extends Application{
                 alert.show();
             }
         });
+
         register.setOnAction(e->{
             String uName = userField.getText();
             String pWord = passField.getText();

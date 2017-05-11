@@ -5,9 +5,6 @@ import control.UDPClient;
 import database.Messages;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -60,6 +57,8 @@ public class ChatScreen extends Stage {
                 e1.printStackTrace();
             }
         });
+
+        //Timer za automatsko refreshovanje sa servera
         Timer t = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,9 +78,6 @@ public class ChatScreen extends Stage {
         });
     }
     public static void refresh() throws Exception {
-        //System.out.println("Refreshed");
-        //messages.setItems(Messages.msgList);
-        //messages.refresh();
         UDPClient.instance.getMessages(user);
         System.out.println("Refreshing");
         for(Message m : Messages.instance.getMsgList()){

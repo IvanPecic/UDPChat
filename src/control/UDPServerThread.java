@@ -4,7 +4,6 @@ import database.Messages;
 import database.Users;
 import user.User;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -54,7 +53,7 @@ public class UDPServerThread implements Runnable {
         }
     }
     
-    public void register(String username, String password, DatagramPacket packet) throws IOException {     // Registers a new user to the server
+    public void register(String username, String password, DatagramPacket packet) throws IOException {
         boolean registered = false;
         User u = new User(username,password);
         if(! Users.users.contains(u)){
@@ -74,7 +73,7 @@ public class UDPServerThread implements Runnable {
 
     }
     
-    public void login(DatagramPacket packet, String username, String password) throws IOException {        // Checks if the user is in the database and send a confirmation
+    public void login(DatagramPacket packet, String username, String password) throws IOException {
         String response;
         User u = new User(username,password);
         if (Users.users.contains(u)){
@@ -108,12 +107,13 @@ public class UDPServerThread implements Runnable {
 
         }
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        String response = null;
+        String response;
         if(toSend == null){
             response = "EMPTY";
         }
-        else
-            response = toSend.getSender().getUsername()+ "#"+df.format(toSend.getDate())+"#"+toSend.getContent();
+        else {
+            response = toSend.getSender().getUsername() + "#" + df.format(toSend.getDate()) + "#" + toSend.getContent();
+        }
 
             sendData = response.getBytes();
             sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
@@ -125,7 +125,6 @@ public class UDPServerThread implements Runnable {
         try {
             
             while (true) {
-                // I/O buffers:
                 receiveData = new byte[1024];
                 receivePacket = new DatagramPacket(receiveData,receiveData.length);
                 socket.receive(receivePacket);
@@ -133,9 +132,6 @@ public class UDPServerThread implements Runnable {
                 System.out.print("Klijent kaze: ");
                 System.out.println(message);
                 handleRequest(message, receivePacket);
-                // ------------------ PROTOKOL ----------------- //
-                //sendData = ("OK").getBytes();
-                //                socket.send(new DatagramPacket(sendData, 0, sendData.length));
             }
         }catch (Exception e){
             

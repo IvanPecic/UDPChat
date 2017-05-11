@@ -22,10 +22,6 @@ public class Message {
         return seen;
     }
 
-    public void setSeen(ArrayList<String> seen) {
-        this.seen = seen;
-    }
-
     public Message(User sender, Date date, String content) {
         this.sender = sender;
         this.date = date;
