@@ -57,9 +57,10 @@ public class User {
         try {
             this.udpClient = UDPClient.instance;
             setLoggedIn(udpClient.sendLogInRequest(this));
-            if(!Users.users.contains(this))
+            if(!Users.users.contains(this) && loggedIn) {
                 Users.users.add(this);
-            Users.users.get(Users.users.indexOf(this)).setLoggedIn(true);
+                Users.users.get(Users.users.indexOf(this)).setLoggedIn(true);
+            }
             System.out.println("LOGIN STATUS:" + loggedIn);
             return loggedIn;
         } catch (IOException e) {

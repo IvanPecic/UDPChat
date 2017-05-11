@@ -53,6 +53,10 @@ public class Main extends Application{
                 new ChatScreen(Users.users.get(Users.users.indexOf(u)));
                 primaryStage.close();
             }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR,"Pogresno korisnicko ime ili lozinka",ButtonType.OK);
+                alert.show();
+            }
         });
         register.setOnAction(e->{
             String uName = userField.getText();
@@ -68,6 +72,7 @@ public class Main extends Application{
                 alert.show();
             }
         });
+
     }
 
 

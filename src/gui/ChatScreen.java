@@ -4,6 +4,7 @@ import control.Message;
 import control.UDPClient;
 import database.Messages;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -38,12 +39,14 @@ public class ChatScreen extends Stage {
         new Messages();
 
         this.user = user;
+        this.setTitle(user.getUsername());
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(10));
         root.setSpacing(20);
         Messages.messages.add(new Message(user, Date.from(Instant.now()),"DEMO MESSAGE"));
         messages.setItems(Messages.instance.getMsgList());
         root.getChildren().addAll(messages,textArea,send);
+        textArea.setMaxHeight(50);
 
         this.setScene(new Scene(root));
         this.show();
@@ -68,6 +71,12 @@ public class ChatScreen extends Stage {
             }
         });
         t.start();
+
+        setOnCloseRequest(e->{
+            e.consume();
+            Platform.exit();
+            System.exit(1);
+        });
     }
     public static void refresh() throws Exception {
         //System.out.println("Refreshed");
@@ -80,4 +89,6 @@ public class ChatScreen extends Stage {
             System.out.println(m.getContent());
         }
     }
+
+
 }
